@@ -23,9 +23,10 @@ export default function PartyMenuScreen({
   const [error, setError] = useState('')
   const [party, setParty] = useState<PartyData | null>(null)
 
-  const createPartyHandler = () => {
+  const createPartyHandler = async () => {
     setLoading(true)
-    createPartyAsync(newParty, setParty as React.Dispatch<React.SetStateAction<PartyData>>, setError, setLoading)
+    await createPartyAsync(newParty, setParty as React.Dispatch<React.SetStateAction<PartyData>>, setError, setLoading)
+    console.log('party', newParty)
   }
 
   const joinPartyHandler = () => {

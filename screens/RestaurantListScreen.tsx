@@ -8,7 +8,6 @@ import Restaurant from '../components/Restaurant'
 import { RestaurantData } from '../types/common'
 import { getRestaurantsAsync } from '../services/fetch'
 import { TabTwoParamList } from '../types/common'
-import { PartiesContext } from '../context/PartiesContext'
 
 export default function RestaurantListScreen({
   navigation,
@@ -17,7 +16,6 @@ export default function RestaurantListScreen({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const { colors } = useTheme()
-  const { party, addRestaurant } = React.useContext(PartiesContext)
 
   useEffect(() => {
     getRestaurantsAsync(setRestaurants, setError, setLoading)
@@ -26,11 +24,11 @@ export default function RestaurantListScreen({
   return (
     <View>
       {loading && <Text>Loading...</Text>}
-      {!loading && party && !restaurants.length && <Text>No more restaurants!</Text>}
-      {!loading && !party && (
+      {!loading && !restaurants.length && <Text>No more restaurants!</Text>}
+      {!loading && (
         <Text>Join a party to begin swiping!</Text>
       )}
-      {party && restaurants &&
+      {restaurants &&
         restaurants.map((restaurant) => (
           <View key={`${restaurant.name}-${restaurant.id}`}>
             <Restaurant restaurant={restaurant} />
