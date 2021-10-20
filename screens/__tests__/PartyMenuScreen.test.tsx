@@ -1,10 +1,11 @@
 import React from 'react'
 import { Text } from 'react-native'
-import { configure, shallow } from 'enzyme'
+import { configure, mount, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { PartyData } from '../../types/common'
 import Party from '../../components/Party'
 import PartyMenuScreen from '../PartyMenuScreen'
+import { PartyContext } from '../../context/PartyContext'
 
 configure({ adapter: new Adapter() })
 
@@ -39,7 +40,10 @@ const props: any = {}
 
 describe("<PartyMenuScreen />", () => {
   it('Renders loading indicator', () => {
-    const wrapper = shallow(<PartyMenuScreen {...props} />)
+    const wrapper = mount(<PartyMenuScreen {...props} />, {
+      wrappingComponent: PartyContext.Provider,
+      wrappingComponentProps: { value: { party: { slug: '', pin: 0 }, addRestaurant: jest.fn(), setParty: jest.fn() } }
+    })
     expect(wrapper.find(Text).length).toBeGreaterThanOrEqual(1)
   })
 })

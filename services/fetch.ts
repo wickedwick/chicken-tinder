@@ -39,14 +39,14 @@ export async function getRestaurantsAsync<RestaurantData>(callback: React.Dispat
             const json = await resp.json()
             callback(json)
         } catch (err) {
-            errorCallback(err)
+            errorCallback(String(err))
         } finally {
             loadingCallback(false)
         }
 }
 
 export async function createPartyAsync<PartyData>(data: PartyData | null,
-    callback: React.Dispatch<React.SetStateAction<PartyData>>,
+    callback: (party: PartyData) => void,
     errorCallback: React.Dispatch<React.SetStateAction<string>>,
     loadingCallback: React.Dispatch<React.SetStateAction<boolean>>): Promise<void> {
         try {

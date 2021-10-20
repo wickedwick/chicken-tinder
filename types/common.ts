@@ -43,7 +43,7 @@ export type PartyProps = {
 
 export type PartyData = {
   slug: string
-  startDate: Date
+  startDate?: Date
   pin: number
   members: Member[]
   partyHost: Member

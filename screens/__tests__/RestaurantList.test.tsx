@@ -6,8 +6,7 @@ import { Text } from 'react-native'
 import { PartyData, RestaurantData } from '../../types/common'
 import RestaurantListScreen from '../RestaurantListScreen'
 import Restaurant from '../../components/Restaurant'
-import { getRestaurantsAsync } from '../../services/fetch'
-import { PartiesContext } from '../../context/PartiesContext'
+import { PartyContext } from '../../context/PartyContext'
 
 configure({ adapter: new Adapter() })
 
@@ -47,31 +46,11 @@ jest.mock('../../services/fetch', () => {
 const props: any = {}
 
 describe('<RestaurantListScreen />', () => {
-  it('Renders loading indicator before useEffect', () => {
-    const wrapper = shallow(<RestaurantListScreen {...props} />)
-    const loadingEl = wrapper.find(Text).first()
-    expect(loadingEl.shallow().text()).toBe('Loading...')
-  })
-
   it('Renders with restaurant data', () => {
-    const newParty: PartyData = {
-      slug: '23326',
-      pin: 4395,
-      startDate: new Date(),
-      members: [],
-      partyHost: {
-        id: 4,
-        name: 'Ed',
-        restaurants: []
-      }
-    }
-    
     withHooks(() => {
       const wrapper = mount(<RestaurantListScreen {...props} />, {
-        wrappingComponent: PartiesContext.Provider,
-        wrappingComponentProps: {
-          value: { party: newParty }
-        }
+        wrappingComponent: PartyContext.Provider,
+        wrappingComponentProps: { value: { party: { slug: '767gh', pin: 0 }, addRestaurant: jest.fn(), setParty: jest.fn() } }
       })
       expect(wrapper.find(Restaurant).length).toBeGreaterThanOrEqual(1)
     })

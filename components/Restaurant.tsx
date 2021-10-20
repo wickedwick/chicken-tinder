@@ -13,7 +13,7 @@ const Restaurant = (props: RestaurantProps): JSX.Element => {
         <Card.Title
           title={restaurant.name}
         />
-        <Card.Cover source={{ uri: restaurant.image.url }} />
+        <Card.Cover source={{ uri: 'http://localhost:1337' + restaurant.image.url }} />
       </Card>
     </View>
   )

@@ -4,6 +4,7 @@ import { Button, useTheme } from 'react-native-paper'
 import { StackScreenProps } from '@react-navigation/stack'
 import { createPartyAsync } from '../services/fetch'
 import { PartyData, TabOneParamList } from '../types/common'
+import { PartyContext } from '../context/PartyContext'
 
 export default function PartyMenuScreen({
   navigation,
@@ -21,12 +22,10 @@ export default function PartyMenuScreen({
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [party, setParty] = useState<PartyData | null>(null)
 
-  const createPartyHandler = async () => {
+  const createPartyHandler = async (callback: (party: PartyData) => void) => {
     setLoading(true)
-    await createPartyAsync(newParty, setParty as React.Dispatch<React.SetStateAction<PartyData>>, setError, setLoading)
-    console.log('party', newParty)
+    await createPartyAsync(newParty, callback, setError, setLoading)
   }
 
   const joinPartyHandler = () => {
@@ -35,23 +34,27 @@ export default function PartyMenuScreen({
   }
 
   return (
-    <View>
-      <Text>Party Menu</Text>
-      {loading && <Text>Loading...</Text>}
-      {!loading && <Text>{error}</Text>}
-      {!loading && party && (
+    <PartyContext.Consumer>
+      {({party, setParty}) => (
         <View>
-          <Text>ID: {party.slug}</Text>
-          <Text>PIN: {party.pin}</Text>
-          <Button onPress={() => navigation.navigate('PartyDetailsScreen', { slug: party.slug, pin: party.pin })}>Go to your party</Button>
+          <Text>Party Menu</Text>
+          {loading && <Text>Loading...</Text>}
+          {!loading && error.length > 0 && <Text>{error}</Text>}
+          {!loading && party.slug.length > 0 && (
+            <View>
+              <Text>ID: {party.slug}</Text>
+              <Text>PIN: {party.pin}</Text>
+              <Button onPress={() => navigation.navigate('PartyDetailsScreen', { slug: party.slug, pin: party.pin })}>Go to your party</Button>
+            </View>
+          )}
+          {!loading && !party.slug && (
+            <View>
+              <Button onPress={() => createPartyHandler(setParty)}>Create a party</Button>
+              <Button onPress={joinPartyHandler}>Join a party</Button>
+            </View>
+          )}
         </View>
       )}
-      {!loading && !party && (
-        <View>
-          <Button onPress={createPartyHandler}>Create a party</Button>
-          <Button onPress={joinPartyHandler}>Join a party</Button>
-        </View>
-      )}
-    </View>
+    </PartyContext.Consumer>
   )
 }
