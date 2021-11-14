@@ -1,5 +1,5 @@
 import React from 'react'
-import { Member, PartyData, RestaurantData } from '../types/common'
+import { PartyData } from '../types/common'
 
 export const emptyParty: PartyData = {
   slug: '',
@@ -12,7 +12,8 @@ export const emptyParty: PartyData = {
 }
 
 export const PartyContext = React.createContext({
+  myMember: emptyParty.partyHost,
   party: emptyParty,
   setParty: (party: PartyData) => {},
-  addRestaurant: (restaurant: RestaurantData, member: Member) => {},
+  setUsername: (username: string) => {},
 })

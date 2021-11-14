@@ -1,5 +1,5 @@
 import { PartyData } from '../../types/common'
-import { getStarWarsDataSingleAsync, getStarWarsDataAsync, getRestaurantsAsync, createPartyAsync } from '../fetch'
+import { getStarWarsDataSingleAsync, getStarWarsDataAsync, getRestaurantsAsync, createPartyAsync, putPartyAsync, getPartyAsync, getPartyBySlugPinAsync } from '../fetch'
 
 jest.mock('node-fetch')
 
@@ -67,22 +67,54 @@ describe('getRestaurantsAsync', () => {
     })
 })
 
+const partyData: PartyData = {
+    id: 8,
+    slug: '394-493d',
+    startDate: new Date('2021-03-23'),
+    pin: 9234,
+    members: [],
+    partyHost: {
+        id: 3,
+        name: 'Marvin',
+        restaurants: []
+    }
+}
+
+describe('getPartiesAsync', () => {
+    it('calls the data and loading callbacks when done', async () => {
+        fetch.mockReturnValue(Promise.resolve({ json: () => Promise.resolve([partyData]) }))
+
+        await getPartyBySlugPinAsync('394-493d', 9234, dataFunc, errorFunc, loadingFunc)
+        expect(loadingFunc).toHaveBeenCalled()
+        expect(dataFunc).toHaveBeenCalledTimes(1)
+    })
+})
+
+describe('getPartyAsync', () => {
+    it('calls the data and loading callbacks when done', async () => {
+        fetch.mockReturnValue(Promise.resolve({ json: () => Promise.resolve({ CAD: 1.42 }) }))
+
+        await getPartyAsync(4, dataFunc, errorFunc, loadingFunc)
+        expect(loadingFunc).toHaveBeenCalled()
+        expect(dataFunc).toHaveBeenCalledTimes(1)
+    })
+})
+
 describe('createPartyAsync', () => {
     it('calls the data and loading callbacks when done', async () => {
-        const partyData: PartyData = {
-            slug: '394-493d',
-            startDate: new Date('2021-03-23'),
-            pin: 9234,
-            members: [],
-            partyHost: {
-                id: 3,
-                name: 'Marvin',
-                restaurants: []
-            }
-        }
         fetch.mockReturnValue(Promise.resolve({ json: () => Promise.resolve({ CAD: 1.42 }) }))
 
         await createPartyAsync(partyData, dataFunc, errorFunc, loadingFunc)
+        expect(loadingFunc).toHaveBeenCalled()
+        expect(dataFunc).toHaveBeenCalledTimes(1)
+    })
+})
+
+describe('putPartyAsync', () => {
+    it('calls the data and loading callbacks when done', async () => {
+        fetch.mockReturnValue(Promise.resolve({ json: () => Promise.resolve(partyData) }))
+
+        await putPartyAsync(partyData, dataFunc, errorFunc, loadingFunc)
         expect(loadingFunc).toHaveBeenCalled()
         expect(dataFunc).toHaveBeenCalledTimes(1)
     })

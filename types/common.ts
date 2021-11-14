@@ -14,6 +14,7 @@ export type TabOneParamList = {
   FilmDetailsScreen: { url: string }
   PartyMenuScreen: undefined
   PartyDetailsScreen: { slug: string, pin: number }
+  PartySelectionScreen: undefined
 }
 
 export type TabTwoParamList = {
@@ -42,6 +43,7 @@ export type PartyProps = {
 }
 
 export type PartyData = {
+  id?: number,
   slug: string
   startDate?: Date
   pin: number

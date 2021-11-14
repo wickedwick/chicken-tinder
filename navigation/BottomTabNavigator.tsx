@@ -4,17 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack'
 import * as React from 'react'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
-import FilmDetailsScreen from '../screens/FilmDetailsScreen'
-import FilmListScreen from '../screens/FilmListScreen'
-import CharacterListScreen from '../screens/CharacterListScreen'
 import {
     BottomTabParamList,
     TabOneParamList,
     TabTwoParamList,
 } from '../types/common'
-import CharacterDetailsScreen from '../screens/CharacterDetailsScreen'
 import RestaurantListScreen from '../screens/RestaurantListScreen'
 import PartyMenuScreen from '../screens/PartyMenuScreen'
+import PartySelectionScreen from '../screens/PartySelectionScreen'
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>()
 
@@ -66,8 +63,8 @@ function TabOneNavigator() {
                 options={{ headerTitle: 'Party Menu' }}
             />
             <TabOneStack.Screen
-                name="PartyDetailsScreen"
-                component={PartyMenuScreen}
+                name="PartySelectionScreen"
+                component={PartySelectionScreen}
                 options={{ headerTitle: 'Party Details' }}
             />
         </TabOneStack.Navigator>
